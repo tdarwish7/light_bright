@@ -3,26 +3,41 @@ $(document).ready(function(){
   var container= $('.container');
   var numOfRows = $('#userrow');
   var numOfCols = $('#usercolumn');
-  var customTable = $('#custom')
+  var customTable = $('#custom');
+  var colorClasses = ['white', 'red', 'green', 'blue'];
+  var colorCycle = colorClasses.length-4;
+  var previousCell;
+
+
 
  customTable.on('click', initGrid);
  customTable.on('click', addClickHandlersV2);
 
+  initGrid()
   addClickHandlersV2()
       function addClickHandlersV2(){
     var cells = $('.cell');
     cells.on('click', changeColor);
   }
 
-
+// console.log(changeColor);
 
   function changeColor(){
-    var colorClasses = ['white', 'red', 'green', 'blue'];
-    var colorCycle = Math.round(Math.random() * colorClasses.length);
+if(previousCell === this){
     var color = colorClasses[colorCycle];
-    $(this).removeClass(colorClasses.join(' '));
-    $(this).addClass(color);
-     }
+    if(colorCycle < 4){
+      $(this).removeClass(colorClasses.join(' '));
+      $(this).addClass(color);
+      colorCycle+=1;
+    } else {
+      colorCycle = 0
+    }
+  } else {
+    colorCycle = 0;
+    previousCell = this;
+  }
+};
+
 //   function addClickHandlers(){
 //     var cells = $('.cell');
 //     for(var counter = 0; counter < cells.length; counter +=1){
@@ -34,7 +49,7 @@ $(document).ready(function(){
 
 
   function initGrid(){
-    $('.container').empty();
+
     for( var i = 0; i< numOfRows.val(); i +=1){
       var row = $('<div></div>');
       row.addClass('row');
